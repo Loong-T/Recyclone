@@ -21,6 +21,7 @@ import java.util.*
 /**
  * @author Xuqiang ZHENG on 18/4/19.
  */
+@Suppress("unused", "MemberVisibilityCanBePrivate")
 open class RecyclerAdapter : AbstractAdapter() {
 
     protected val ruleManager = RuleManager()
@@ -44,8 +45,8 @@ open class RecyclerAdapter : AbstractAdapter() {
         ruleManager.add(RuleType(clazz, rule))
     }
 
-    fun swapData(list: MutableList<in Any?>) {
-        _data = list
+    fun swapData(list: List<Any?>) {
+        _data = ArrayList(list)
         notifyDataSetChanged()
     }
 
