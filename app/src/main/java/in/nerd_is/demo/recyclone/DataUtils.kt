@@ -34,4 +34,8 @@ object DataUtils {
             faker.university().name()
         )
     }
+
+    fun generatePersonList(count: Int = 20): List<Person> {
+        return (0..count).map { generatePerson() }
+    }
 }

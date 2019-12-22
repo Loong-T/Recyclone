@@ -1,13 +1,14 @@
 package `in`.nerd_is.demo.recyclone
 
+import `in`.nerd_is.demo.recyclone.DataUtils.generatePersonList
+import `in`.nerd_is.demo.recyclone.entity.Person
 import `in`.nerd_is.recyclone.RecyclerAdapter
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_recycler_view.*
-import kotlin.random.Random
 
 class RecyclerViewActivity : AppCompatActivity() {
 
@@ -26,13 +27,9 @@ class RecyclerViewActivity : AppCompatActivity() {
     private fun initMultiType() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         val adapter = RecyclerAdapter()
-        adapter.addRule(String::class.java, TextRule)
+        adapter.addRule(Person::class.java, PersonRule)
         recyclerView.adapter = adapter
-        adapter.swapData(generateRandomStringList())
-    }
-
-    private fun generateRandomStringList(): List<String> {
-        return (0..20).map { Random.nextInt(100).toString() }
+        adapter.swapData(generatePersonList())
     }
 
     companion object {
