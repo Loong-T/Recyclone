@@ -1,17 +1,25 @@
 package `in`.nerd_is.demo.recyclone
 
+import `in`.nerd_is.demo.recyclone.databinding.ActivityMainBinding
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        btnMultiType.setOnClickListener {
-            RecyclerViewActivity.startMultiType(this)
+        with(binding) {
+            btnMultiType.setOnClickListener {
+                RecyclerViewActivity.startMultiType(this@MainActivity)
+            }
+            btnPaging.setOnClickListener {
+                RecyclerViewActivity.startPaging(this@MainActivity)
+            }
         }
     }
 }

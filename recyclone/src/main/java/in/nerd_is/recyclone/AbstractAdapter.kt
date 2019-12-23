@@ -25,13 +25,9 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class AbstractAdapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), DataOwner {
 
-    private lateinit var ruleManager: RuleManager
-    private lateinit var delegate: AdapterDelegate
+    protected val ruleManager: RuleManager = RuleManager()
 
-    fun setRuleManager(ruleManager: RuleManager) {
-        this.ruleManager = ruleManager
-        delegate = AdapterDelegate(ruleManager, this)
-    }
+    protected abstract val delegate: AdapterDelegate
 
     override fun getItemCount(): Int {
         return data.size

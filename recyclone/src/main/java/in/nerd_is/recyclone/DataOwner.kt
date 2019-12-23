@@ -20,5 +20,5 @@ package `in`.nerd_is.recyclone
  * @author Xuqiang ZHENG on 18/4/21.
  */
 interface DataOwner {
-    var data: List<Any?>
+    val data: List<Any?>
 }

@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingStart="16dp"
-    android:paddingTop="8dp"
-    android:paddingEnd="16dp"
-    android:paddingBottom="8dp"
-    tools:context=".MainActivity">
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  android:paddingStart="16dp"
+  android:paddingTop="8dp"
+  android:paddingEnd="16dp"
+  android:paddingBottom="8dp"
+  tools:context=".MainActivity"
+  tools:ignore="HardcodedText">
 
-    <Button
-        android:id="@+id/btnMultiType"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:text="Multi Type" />
+  <Button
+    android:id="@+id/btnMultiType"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Multi Type"
+    android:textAllCaps="false" />
+
+  <Button
+    android:id="@+id/btnPaging"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Paging"
+    android:textAllCaps="false" />
 </LinearLayout>

@@ -22,24 +22,17 @@ import java.util.*
  * @author Xuqiang ZHENG on 18/4/19.
  */
 @Suppress("unused", "MemberVisibilityCanBePrivate")
-open class RecyclerAdapter : AbstractAdapter() {
+class RecyclerAdapter : AbstractAdapter() {
 
-    protected val ruleManager = RuleManager()
+    override val delegate: AdapterDelegate = AdapterDelegate(ruleManager, this)
 
     private var _data: MutableList<Any?> = ArrayList()
 
-    init {
-        setRuleManager(ruleManager)
-    }
-
-    protected val isDataEmpty: Boolean
-        get() = data.isEmpty()
-
-    override var data: List<Any?>
+    override val data: List<Any?>
         get() = _data
-        set(value) {
-            _data = value.toMutableList()
-        }
+
+    private val isDataEmpty: Boolean
+        get() = data.isEmpty()
 
     fun <T> addRule(clazz: Class<T>, rule: Rule<T, *>) {
         ruleManager.add(RuleType(clazz, rule))
