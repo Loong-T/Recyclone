@@ -24,18 +24,18 @@ import com.github.javafaker.Faker
  * @author Xuqiang ZHENG on 19/12/20.
  */
 object DataUtils {
-    private val faker = Faker()
+  private val faker = Faker()
 
-    fun generatePerson(): Person {
-        return Person(
-            faker.name().fullName(),
-            faker.internet().avatar(),
-            faker.dog().gender(),
-            faker.university().name()
-        )
-    }
+  fun generatePerson(): Person {
+    return Person(
+      faker.name().fullName(),
+      faker.internet().avatar(),
+      faker.dog().gender(),
+      faker.university().name()
+    )
+  }
 
-    fun generatePersonList(count: Int = 20): List<Person> {
-        return (0..count).map { generatePerson() }
-    }
+  fun generatePersonList(count: Int = 20): List<Person> {
+    return (0..count).map { generatePerson() }
+  }
 }
