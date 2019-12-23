@@ -38,4 +38,8 @@ object DataUtils {
   fun generatePersonList(count: Int = 20): List<Person> {
     return (0..count).map { generatePerson() }
   }
+
+  fun generateNameList(count: Int = 10): List<String> {
+    return (0..count).map { faker.name().nameWithMiddle() }
+  }
 }

@@ -1,5 +1,6 @@
 package `in`.nerd_is.demo.recyclone
 
+import `in`.nerd_is.demo.recyclone.DataUtils.generateNameList
 import `in`.nerd_is.demo.recyclone.DataUtils.generatePersonList
 import `in`.nerd_is.demo.recyclone.entity.Person
 import `in`.nerd_is.recyclone.RecyclerAdapter
@@ -21,15 +22,20 @@ class RecyclerViewActivity : AppCompatActivity() {
                 initMultiType()
             }
         }
-
     }
 
     private fun initMultiType() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         val adapter = RecyclerAdapter()
         adapter.addRule(Person::class.java, PersonRule)
+        adapter.addRule(String::class.java, TextRule)
         recyclerView.adapter = adapter
-        adapter.swapData(generatePersonList())
+
+        val personLit = generatePersonList()
+        val nameList = generateNameList()
+        val data = (personLit + nameList).shuffled()
+
+        adapter.swapData(data)
     }
 
     companion object {
