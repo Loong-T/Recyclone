@@ -41,6 +41,10 @@ class RecyclerAdapter : AbstractAdapter() {
     ruleManager.add(TypeRule(clazz, rule))
   }
 
+  fun setNullRule(rule: Rule<RuleManager.NullType, *>) {
+    ruleManager.setNullTypeRule(TypeRule(RuleManager.NullType::class.java, rule))
+  }
+
   fun swapData(list: List<Any?>) {
     _data = ArrayList(list)
     notifyDataSetChanged()

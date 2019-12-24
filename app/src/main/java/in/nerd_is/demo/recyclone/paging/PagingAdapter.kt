@@ -15,8 +15,9 @@
  *
  */
 
-package `in`.nerd_is.demo.recyclone
+package `in`.nerd_is.demo.recyclone.paging
 
+import `in`.nerd_is.demo.recyclone.StringRule
 import `in`.nerd_is.recyclone.AdapterDelegate
 import `in`.nerd_is.recyclone.DataOwner
 import `in`.nerd_is.recyclone.RuleManager
@@ -27,18 +28,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
-object DIFF_CALLBACK : DiffUtil.ItemCallback<Any>() {
-  override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
-    return oldItem === newItem
-  }
-
-  @SuppressLint("DiffUtilEquals")
-  override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
-    return oldItem.toString() == newItem.toString()
-  }
-}
-
-class PagingAdapter : PagedListAdapter<Any, RecyclerView.ViewHolder>(DIFF_CALLBACK), DataOwner {
+class PagingAdapter : PagedListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback), DataOwner {
 
   private val ruleManager = RuleManager()
   private val delegate = AdapterDelegate(ruleManager, this)
@@ -73,5 +63,18 @@ class PagingAdapter : PagedListAdapter<Any, RecyclerView.ViewHolder>(DIFF_CALLBA
     payloads: MutableList<Any>
   ) {
     delegate.onBindViewHolder(holder, position, payloads)
+  }
+
+  companion object {
+    object DiffCallback : DiffUtil.ItemCallback<Any>() {
+      override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
+        return oldItem === newItem
+      }
+
+      @SuppressLint("DiffUtilEquals")
+      override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
+        return oldItem.toString() == newItem.toString()
+      }
+    }
   }
 }

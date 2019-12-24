@@ -27,9 +27,9 @@ import androidx.recyclerview.widget.RecyclerView
 class RuleManager {
 
   private val ruleSet = RuleSet()
-  private var nullTypeRule: TypeRule<Any?>? = null
+  private var nullTypeRule: TypeRule<NullType>? = null
 
-  fun setNullTypeRule(rule: TypeRule<Any?>) {
+  fun setNullTypeRule(rule: TypeRule<NullType>) {
     nullTypeRule = rule
   }
 
@@ -46,18 +46,22 @@ class RuleManager {
 
   fun createViewHolder(parent: ViewGroup, type: Int): RecyclerView.ViewHolder {
     if (type == NULL_TYPE) {
-      if (nullTypeRule == null) {
-        throw IllegalStateException("no TypeRule set for null item, consider invoke setNullTypeRule()")
-      }
+      checkNullTypeRule()
       return nullTypeRule!!.rule.onCreateHolder(LayoutInflater.from(parent.context), parent)
     }
 
     return ruleSet[type].rule.onCreateHolder(LayoutInflater.from(parent.context), parent)
   }
 
+  @Suppress("UNCHECKED_CAST")
   fun bindViewHolder(viewHolder: RecyclerView.ViewHolder, item: Any?) {
-    @Suppress("UNCHECKED_CAST")
-    val rule = ruleSet[getType(item)].rule as Rule<Any?, RecyclerView.ViewHolder>
+    val type = getType(item)
+    if (type == NULL_TYPE) {
+      checkNullTypeRule()
+      val rule = nullTypeRule!!.rule as Rule<NullType, RecyclerView.ViewHolder>
+      return rule.onBindHolder(viewHolder, NullType())
+    }
+    val rule = ruleSet[type].rule as Rule<Any?, RecyclerView.ViewHolder>
     rule.onBindHolder(viewHolder, item)
   }
 
@@ -65,7 +69,15 @@ class RuleManager {
     bindViewHolder(viewHolder, item)
   }
 
+  private fun checkNullTypeRule() {
+    if (nullTypeRule == null) {
+      throw IllegalStateException("no TypeRule set for null item, consider invoke setNullTypeRule()")
+    }
+  }
+
   companion object {
     const val NULL_TYPE = -2
   }
+
+  class NullType
 }
