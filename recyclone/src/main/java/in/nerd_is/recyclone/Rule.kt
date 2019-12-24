@@ -20,9 +20,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class Rule<T, VH: RecyclerView.ViewHolder> {
+interface Rule<T, VH : RecyclerView.ViewHolder> {
 
-    abstract fun onCreateHolder(inflater: LayoutInflater, parent: ViewGroup): VH
+  fun onCreateHolder(inflater: LayoutInflater, parent: ViewGroup): VH
 
-    abstract fun onBindHolder(holder: VH, item: T)
+  fun onBindHolder(holder: VH, item: T)
 }

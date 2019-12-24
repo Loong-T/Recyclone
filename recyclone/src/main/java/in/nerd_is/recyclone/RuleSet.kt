@@ -16,25 +16,30 @@
 
 package `in`.nerd_is.recyclone
 
-class RuleType<T>(
-    val clazz: Class<T>,
-    val rule: Rule<T, *>
+class TypeRule<T>(
+  val clazz: Class<T>,
+  val rule: Rule<T, *>
 )
 
-class RuleSet {
-    private val rules = ArrayList<RuleType<*>>()
+internal class RuleSet {
+  private val rules = ArrayList<TypeRule<*>>()
 
-    fun <T> add(type: RuleType<T>) {
-        rules.add(type)
+  fun <T> add(type: TypeRule<T>) {
+    rules.add(type)
+  }
+
+  fun <T> getType(clazz: Class<T>): Int {
+    var idx = rules.indexOfFirst { it.clazz == clazz }
+    if (idx == -1) {
+      idx = rules.indexOfFirst { it.clazz.isAssignableFrom(clazz) }
     }
-
-    fun <T> getType(clazz: Class<T>): Int {
-        var idx = rules.indexOfFirst { it.clazz == clazz }
-        if (idx == -1) {
-            idx = rules.indexOfFirst { it.clazz.isAssignableFrom(clazz) }
-        }
-        return idx
+    if (idx == -1) {
+      throw IllegalStateException("class ${clazz.name} is not bond to a TypeRule, do you forget to add one?")
     }
+    return idx
+  }
 
-    operator fun get(type: Int): RuleType<*> = rules[type]
+  operator fun get(type: Int): TypeRule<*> {
+    return rules[type]
+  }
 }

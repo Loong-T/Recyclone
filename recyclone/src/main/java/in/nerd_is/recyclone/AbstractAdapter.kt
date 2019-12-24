@@ -23,32 +23,33 @@ import androidx.recyclerview.widget.RecyclerView
  * @author Xuqiang ZHENG on 2016/11/23.
  */
 abstract class AbstractAdapter :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>(), DataOwner {
+  RecyclerView.Adapter<RecyclerView.ViewHolder>(), DataOwner {
 
-    protected val ruleManager: RuleManager = RuleManager()
+  protected val ruleManager: RuleManager = RuleManager()
 
-    protected abstract val delegate: AdapterDelegate
+  @Suppress("LeakingThis")
+  private val delegate: AdapterDelegate = AdapterDelegate(ruleManager, this)
 
-    override fun getItemCount(): Int {
-        return data.size
-    }
+  override fun getItemCount(): Int {
+    return getSize()
+  }
 
-    override fun getItemViewType(position: Int): Int {
-        return delegate.getItemViewType(position)
-    }
+  override fun getItemViewType(position: Int): Int {
+    return delegate.getItemViewType(position)
+  }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return delegate.onCreateViewHolder(parent, viewType)
-    }
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    return delegate.onCreateViewHolder(parent, viewType)
+  }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        delegate.onBindViewHolder(holder, position)
-    }
+  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    delegate.onBindViewHolder(holder, position)
+  }
 
-    override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder, position: Int,
-        payloads: List<Any>
-    ) {
-        delegate.onBindViewHolder(holder, position, payloads)
-    }
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder, position: Int,
+    payloads: List<Any>
+  ) {
+    delegate.onBindViewHolder(holder, position, payloads)
+  }
 }

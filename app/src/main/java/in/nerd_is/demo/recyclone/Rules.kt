@@ -31,40 +31,40 @@ import coil.api.load
  * @author Xuqiang ZHENG on 19/12/20.
  */
 class TitleHolder(view: View) : RecyclerView.ViewHolder(view) {
-    private val textView = view as TextView
+  private val textView = view as TextView
 
-    fun bindTo(data: String) {
-        textView.text = data
-    }
+  fun bindTo(data: String) {
+    textView.text = data
+  }
 }
 
-object TextRule : Rule<String, TitleHolder>() {
-    override fun onCreateHolder(inflater: LayoutInflater, parent: ViewGroup): TitleHolder {
-        return TitleHolder(inflater.inflate(R.layout.item_title, parent, false))
-    }
+object StringRule : Rule<String, TitleHolder> {
+  override fun onCreateHolder(inflater: LayoutInflater, parent: ViewGroup): TitleHolder {
+    return TitleHolder(inflater.inflate(R.layout.item_title, parent, false))
+  }
 
-    override fun onBindHolder(holder: TitleHolder, item: String) {
-        holder.bindTo(item)
-    }
+  override fun onBindHolder(holder: TitleHolder, item: String) {
+    holder.bindTo(item)
+  }
 }
 
 class PersonHolder(private val binding: ItemPersonBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bindTo(data: Person) {
-        with(binding) {
-            ivAvatar.load(data.avatar)
-            tvName.text = data.name
-            tvUniversity.text = data.university
-            tvGender.text = data.gender
-        }
+  fun bindTo(data: Person) {
+    with(binding) {
+      ivAvatar.load(data.avatar)
+      tvName.text = data.name
+      tvUniversity.text = data.university
+      tvGender.text = data.gender
     }
+  }
 }
 
-object PersonRule : Rule<Person, PersonHolder>() {
-    override fun onCreateHolder(inflater: LayoutInflater, parent: ViewGroup): PersonHolder {
-        return PersonHolder(ItemPersonBinding.inflate(inflater, parent, false))
-    }
+object PersonRule : Rule<Person, PersonHolder> {
+  override fun onCreateHolder(inflater: LayoutInflater, parent: ViewGroup): PersonHolder {
+    return PersonHolder(ItemPersonBinding.inflate(inflater, parent, false))
+  }
 
-    override fun onBindHolder(holder: PersonHolder, item: Person) {
-        holder.bindTo(item)
-    }
+  override fun onBindHolder(holder: PersonHolder, item: Person) {
+    holder.bindTo(item)
+  }
 }

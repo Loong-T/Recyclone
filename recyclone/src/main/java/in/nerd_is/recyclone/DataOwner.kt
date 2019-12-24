@@ -20,5 +20,7 @@ package `in`.nerd_is.recyclone
  * @author Xuqiang ZHENG on 18/4/21.
  */
 interface DataOwner {
-    val data: List<Any?>
+  operator fun get(position: Int): Any?
+
+  fun getSize(): Int
 }

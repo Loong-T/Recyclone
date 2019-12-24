@@ -23,22 +23,22 @@ import androidx.recyclerview.widget.RecyclerView
  * @author Xuqiang ZHENG on 18/4/21.
  */
 class AdapterDelegate(
-    private val manager: RuleManager,
-    private val dataOwner: DataOwner
+  private val manager: RuleManager,
+  private val dataOwner: DataOwner
 ) {
-    fun getItemViewType(position: Int): Int {
-        return manager.getType(dataOwner.data[position])
-    }
+  fun getItemViewType(position: Int): Int {
+    return manager.getType(dataOwner[position])
+  }
 
-    fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return manager.createViewHolder(parent, viewType)
-    }
+  fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    return manager.createViewHolder(parent, viewType)
+  }
 
-    fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        manager.bindViewHolder(holder, dataOwner.data[position])
-    }
+  fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    manager.bindViewHolder(holder, dataOwner[position])
+  }
 
-    fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: List<Any>) {
-        manager.bindViewHolder(holder, dataOwner.data[position], payloads)
-    }
+  fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: List<Any>) {
+    manager.bindViewHolder(holder, dataOwner[position], payloads)
+  }
 }

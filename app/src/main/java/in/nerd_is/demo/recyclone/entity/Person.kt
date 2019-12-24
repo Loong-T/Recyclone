@@ -21,8 +21,8 @@ package `in`.nerd_is.demo.recyclone.entity
  * @author Xuqiang ZHENG on 19/12/20.
  */
 data class Person(
-    val name: String,
-    val avatar: String,
-    val gender: String,
-    val university: String
+  val name: String,
+  val avatar: String,
+  val gender: String,
+  val university: String
 )

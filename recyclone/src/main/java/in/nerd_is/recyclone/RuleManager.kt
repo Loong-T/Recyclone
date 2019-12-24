@@ -26,33 +26,46 @@ import androidx.recyclerview.widget.RecyclerView
  */
 class RuleManager {
 
-    private val ruleSet = RuleSet()
+  private val ruleSet = RuleSet()
+  private var nullTypeRule: TypeRule<Any?>? = null
 
-    fun <T> add(type: RuleType<T>) {
-        ruleSet.add(type)
+  fun setNullTypeRule(rule: TypeRule<Any?>) {
+    nullTypeRule = rule
+  }
+
+  fun <T> add(type: TypeRule<T>) {
+    ruleSet.add(type)
+  }
+
+  fun getType(item: Any?): Int {
+    if (item == null) {
+      return NULL_TYPE
+    }
+    return ruleSet.getType(item::class.java)
+  }
+
+  fun createViewHolder(parent: ViewGroup, type: Int): RecyclerView.ViewHolder {
+    if (type == NULL_TYPE) {
+      if (nullTypeRule == null) {
+        throw IllegalStateException("no TypeRule set for null item, consider invoke setNullTypeRule()")
+      }
+      return nullTypeRule!!.rule.onCreateHolder(LayoutInflater.from(parent.context), parent)
     }
 
-    fun getType(item: Any?): Int {
-        if (item == null) {
-            return NULL_TYPE
-        }
-        return ruleSet.getType(item::class.java)
-    }
+    return ruleSet[type].rule.onCreateHolder(LayoutInflater.from(parent.context), parent)
+  }
 
-    fun createViewHolder(parent: ViewGroup, type: Int): RecyclerView.ViewHolder {
-        return ruleSet[type].rule.onCreateHolder(LayoutInflater.from(parent.context), parent)
-    }
+  fun bindViewHolder(viewHolder: RecyclerView.ViewHolder, item: Any?) {
+    @Suppress("UNCHECKED_CAST")
+    val rule = ruleSet[getType(item)].rule as Rule<Any?, RecyclerView.ViewHolder>
+    rule.onBindHolder(viewHolder, item)
+  }
 
-    fun bindViewHolder(viewHolder: RecyclerView.ViewHolder, item: Any?) {
-        val rule = ruleSet[getType(item)].rule as Rule<Any?, RecyclerView.ViewHolder>
-        rule.onBindHolder(viewHolder, item)
-    }
+  fun bindViewHolder(viewHolder: RecyclerView.ViewHolder, item: Any?, payloads: List<Any>) {
+    bindViewHolder(viewHolder, item)
+  }
 
-    fun bindViewHolder(viewHolder: RecyclerView.ViewHolder, item: Any?, payloads: List<Any>) {
-        bindViewHolder(viewHolder, item)
-    }
-
-    companion object {
-        const val NULL_TYPE = -1
-    }
+  companion object {
+    const val NULL_TYPE = -2
+  }
 }

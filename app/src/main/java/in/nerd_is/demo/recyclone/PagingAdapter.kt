@@ -20,6 +20,7 @@ package `in`.nerd_is.demo.recyclone
 import `in`.nerd_is.recyclone.AdapterDelegate
 import `in`.nerd_is.recyclone.DataOwner
 import `in`.nerd_is.recyclone.RuleManager
+import `in`.nerd_is.recyclone.TypeRule
 import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
@@ -42,8 +43,17 @@ class PagingAdapter : PagedListAdapter<Any, RecyclerView.ViewHolder>(DIFF_CALLBA
   private val ruleManager = RuleManager()
   private val delegate = AdapterDelegate(ruleManager, this)
 
-  override val data: List<Any?>
-    get() = currentList?.snapshot() ?: emptyList()
+  init {
+    ruleManager.add(TypeRule(String::class.java, StringRule))
+  }
+
+  override fun get(position: Int): Any? {
+    return getItem(position)
+  }
+
+  override fun getSize(): Int {
+    return itemCount
+  }
 
   override fun getItemViewType(position: Int): Int {
     return delegate.getItemViewType(position)
