@@ -15,27 +15,18 @@
  *
  */
 
-package `in`.nerd_is.demo.recyclone.paging
+package `in`.nerd_is.recyclone.paging
 
-import `in`.nerd_is.demo.recyclone.StringRule
-import `in`.nerd_is.recyclone.AdapterDelegate
-import `in`.nerd_is.recyclone.DataOwner
-import `in`.nerd_is.recyclone.RuleManager
-import `in`.nerd_is.recyclone.TypeRule
-import android.annotation.SuppressLint
+import `in`.nerd_is.recyclone.*
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
-class PagingAdapter : PagedListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback), DataOwner {
+class PagingAdapter(diffCallback: DiffUtil.ItemCallback<Any?>) : PagedListAdapter<Any?, RecyclerView.ViewHolder>(diffCallback), DataOwner {
 
   private val ruleManager = RuleManager()
   private val delegate = AdapterDelegate(ruleManager, this)
-
-  init {
-    ruleManager.add(TypeRule(String::class.java, StringRule))
-  }
 
   override fun get(position: Int): Any? {
     return getItem(position)
@@ -65,16 +56,11 @@ class PagingAdapter : PagedListAdapter<Any, RecyclerView.ViewHolder>(DiffCallbac
     delegate.onBindViewHolder(holder, position, payloads)
   }
 
-  companion object {
-    object DiffCallback : DiffUtil.ItemCallback<Any>() {
-      override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
-        return oldItem === newItem
-      }
+  fun <T> addRule(clazz: Class<T>, rule: Rule<T, *>) {
+    ruleManager.add(TypeRule(clazz, rule))
+  }
 
-      @SuppressLint("DiffUtilEquals")
-      override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
-        return oldItem.toString() == newItem.toString()
-      }
-    }
+  fun setNullRule(rule: Rule<RuleManager.NullType, *>) {
+    ruleManager.setNullTypeRule(TypeRule(RuleManager.NullType::class.java, rule))
   }
 }

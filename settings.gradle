@@ -1,2 +1,2 @@
-include ':app', ':recyclone'
 rootProject.name='Recyclone'
+include ':app', ':recyclone', ':recyclone-paging'

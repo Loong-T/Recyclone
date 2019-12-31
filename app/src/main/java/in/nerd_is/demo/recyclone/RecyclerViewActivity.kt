@@ -5,10 +5,11 @@ import `in`.nerd_is.demo.recyclone.DataUtils.generatePersonList
 import `in`.nerd_is.demo.recyclone.databinding.ActivityRecyclerViewBinding
 import `in`.nerd_is.demo.recyclone.entity.Person
 import `in`.nerd_is.demo.recyclone.paging.NumberDataSource
-import `in`.nerd_is.demo.recyclone.paging.PagingAdapter
 import `in`.nerd_is.recyclone.RecyclerAdapter
 import `in`.nerd_is.recyclone.Rule
 import `in`.nerd_is.recyclone.RuleManager
+import `in`.nerd_is.recyclone.paging.PagingAdapter
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -16,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.paging.PagedList
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import java.util.concurrent.Executors
 
@@ -63,7 +65,27 @@ class RecyclerViewActivity : AppCompatActivity() {
   }
 
   private fun initPaging() {
-    val adapter = PagingAdapter()
+    val adapter = PagingAdapter(object : DiffUtil.ItemCallback<Any?>() {
+      override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
+        return oldItem === newItem
+      }
+
+      @SuppressLint("DiffUtilEquals")
+      override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
+        return oldItem.toString() == newItem.toString()
+      }
+    })
+    adapter.addRule(String::class.java, StringRule)
+    adapter.setNullRule(object : Rule<RuleManager.NullType, TitleHolder> {
+      override fun onCreateHolder(inflater: LayoutInflater, parent: ViewGroup): TitleHolder {
+        return TitleHolder(inflater.inflate(R.layout.item_title, parent, false))
+      }
+
+      override fun onBindHolder(holder: TitleHolder, item: RuleManager.NullType) {
+        holder.bindTo("Data MISSING")
+      }
+    })
+
     val config = PagedList.Config.Builder()
       .setInitialLoadSizeHint(20)
       .setPageSize(20)
