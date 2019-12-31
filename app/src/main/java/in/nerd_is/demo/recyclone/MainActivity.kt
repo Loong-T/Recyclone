@@ -1,6 +1,7 @@
 package `in`.nerd_is.demo.recyclone
 
 import `in`.nerd_is.demo.recyclone.databinding.ActivityMainBinding
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
@@ -19,6 +20,9 @@ class MainActivity : AppCompatActivity() {
       }
       btnPaging.setOnClickListener {
         RecyclerViewActivity.startPaging(this@MainActivity)
+      }
+      btnLoadMore.setOnClickListener {
+        startActivity(Intent(this@MainActivity, LoadMoreActivity::class.java))
       }
     }
   }

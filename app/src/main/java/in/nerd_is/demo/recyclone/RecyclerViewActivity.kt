@@ -53,8 +53,10 @@ class RecyclerViewActivity : AppCompatActivity() {
         holder.bindTo("Data MISSING!")
       }
     })
-    binding.recyclerView.adapter = adapter
-    binding.recyclerView.layoutManager = LinearLayoutManager(this)
+    with(binding.recyclerView) {
+      this.adapter = adapter
+      layoutManager = LinearLayoutManager(this@RecyclerViewActivity)
+    }
 
     val personLit = generatePersonList()
     val nameList = generateNameList()

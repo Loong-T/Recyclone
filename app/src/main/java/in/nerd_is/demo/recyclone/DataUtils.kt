@@ -36,10 +36,10 @@ object DataUtils {
   }
 
   fun generatePersonList(count: Int = 20): List<Person> {
-    return (0..count).map { generatePerson() }
+    return (0 until count).map { generatePerson() }
   }
 
   fun generateNameList(count: Int = 10): List<String> {
-    return (0..count).map { faker.name().nameWithMiddle() }
+    return (0 until count).map { faker.name().nameWithMiddle() }
   }
 }

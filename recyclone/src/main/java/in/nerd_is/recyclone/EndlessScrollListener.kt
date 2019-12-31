@@ -20,52 +20,47 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import java.lang.IllegalArgumentException
 
 /**
  * @author Xuqiang ZHENG on 18/4/20.
  */
-class EndlessScrollListener(
-  private val layoutManager: RecyclerView.LayoutManager,
-  private val loadMoreSubject: LoadMoreSubject
-) : RecyclerView.OnScrollListener() {
+class EndlessScrollListener(private val loadMoreSubject: LoadMoreSubject) :
+  RecyclerView.OnScrollListener() {
 
   var visibleThreshold = 6
 
-  private val lastVisibleItemPosition: Int
-    get() {
-      var lastVisibleItemPosition = 0
-      when (layoutManager) {
-        is StaggeredGridLayoutManager -> {
-          val lastVisibleItemPositions = layoutManager
-            .findLastVisibleItemPositions(null)
-          lastVisibleItemPosition = getLastVisibleItem(lastVisibleItemPositions)
-        }
-        is GridLayoutManager -> {
-          lastVisibleItemPosition = layoutManager
-            .findLastVisibleItemPosition()
-        }
-        is LinearLayoutManager -> {
-          lastVisibleItemPosition = layoutManager
-            .findLastVisibleItemPosition()
-        }
+  private var lastVisibleItemPositions: IntArray? = null
+
+  private fun lastVisibleItemPosition(layoutManager: RecyclerView.LayoutManager): Int {
+    return when (layoutManager) {
+      is StaggeredGridLayoutManager -> {
+        lastVisibleItemPositions =
+          layoutManager.findLastVisibleItemPositions(lastVisibleItemPositions)
+        getLastVisibleItem(lastVisibleItemPositions!!)
       }
-      return lastVisibleItemPosition
+      is GridLayoutManager -> {
+        layoutManager.findLastVisibleItemPosition()
+      }
+      is LinearLayoutManager -> {
+        layoutManager.findLastVisibleItemPosition()
+      }
+      else -> throw IllegalArgumentException("EndlessScrollListener do not support ${layoutManager::class.java.simpleName}")
     }
+  }
 
   override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-    if (dy < 0 || loadMoreSubject.isLoading)
+    if (dy < 0 || loadMoreSubject.isLoading) {
       return
+    }
 
+    val layoutManager = recyclerView.layoutManager!!
     val totalItemCount = layoutManager.itemCount
-    val lastVisibleItemPosition = lastVisibleItemPosition
+    val lastVisibleItemPosition = lastVisibleItemPosition(layoutManager)
 
     if (lastVisibleItemPosition + visibleThreshold >= totalItemCount - 1) {
       loadMoreSubject.loadMore()
     }
-  }
-
-  fun attachTo(recyclerView: RecyclerView) {
-    recyclerView.addOnScrollListener(this)
   }
 
   private fun getLastVisibleItem(lastVisibleItemPositions: IntArray): Int {
