@@ -52,4 +52,20 @@ abstract class AbstractAdapter :
   ) {
     delegate.onBindViewHolder(holder, position, payloads)
   }
+
+  override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+    delegate.onViewRecycled(holder)
+  }
+
+  override fun onFailedToRecycleView(holder: RecyclerView.ViewHolder): Boolean {
+    return delegate.onFailedToRecycleView(holder)
+  }
+
+  override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+    delegate.onViewAttachedToWindow(holder)
+  }
+
+  override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
+    delegate.onViewDetachedFromWindow(holder)
+  }
 }

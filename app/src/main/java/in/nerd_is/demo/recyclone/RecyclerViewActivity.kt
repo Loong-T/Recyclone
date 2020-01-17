@@ -31,12 +31,8 @@ class RecyclerViewActivity : AppCompatActivity() {
     setContentView(binding.root)
 
     when (intent.action) {
-      ACTION_MULTI_TYPE -> {
-        initMultiType()
-      }
-      ACTION_PAGING -> {
-        initPaging()
-      }
+      ACTION_MULTI_TYPE -> initMultiType()
+      ACTION_PAGING -> initPaging()
     }
   }
 

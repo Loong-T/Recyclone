@@ -41,4 +41,20 @@ class AdapterDelegate(
   fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: List<Any>) {
     manager.bindViewHolder(holder, dataOwner[position], payloads)
   }
+
+  fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+    manager.onViewRecycled(holder)
+  }
+
+  fun onFailedToRecycleView(holder: RecyclerView.ViewHolder): Boolean {
+    return manager.onFailedToRecycleView(holder)
+  }
+
+  fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+    manager.onViewAttachedToWindow(holder)
+  }
+
+  fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
+    manager.onViewDetachedFromWindow(holder)
+  }
 }

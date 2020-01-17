@@ -18,12 +18,12 @@ package `in`.nerd_is.recyclone
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 /**
  * @author Xuqiang ZHENG on 2017/2/25.
  */
+@Suppress("UNCHECKED_CAST")
 class RuleManager {
 
   private val ruleSet = RuleSet()
@@ -44,29 +44,32 @@ class RuleManager {
     return ruleSet.getType(item::class.java)
   }
 
-  fun createViewHolder(parent: ViewGroup, type: Int): RecyclerView.ViewHolder {
-    if (type == NULL_TYPE) {
-      checkNullTypeRule()
-      return nullTypeRule!!.rule.onCreateHolder(LayoutInflater.from(parent.context), parent)
-    }
-
-    return ruleSet[type].rule.onCreateHolder(LayoutInflater.from(parent.context), parent)
+  fun createViewHolder(parent: ViewGroup, type: Int): ViewHolder {
+    return getNullableRule(type).onCreateHolder(LayoutInflater.from(parent.context), parent)
   }
 
-  @Suppress("UNCHECKED_CAST")
-  fun bindViewHolder(viewHolder: RecyclerView.ViewHolder, item: Any?) {
-    val type = getType(item)
-    if (type == NULL_TYPE) {
-      checkNullTypeRule()
-      val rule = nullTypeRule!!.rule as Rule<NullType, RecyclerView.ViewHolder>
-      return rule.onBindHolder(viewHolder, NullType())
-    }
-    val rule = ruleSet[type].rule as Rule<Any?, RecyclerView.ViewHolder>
-    rule.onBindHolder(viewHolder, item)
+  fun bindViewHolder(viewHolder: ViewHolder, item: Any?) {
+    getNullableRule(getType(item)).onBindHolder(viewHolder, replaceNullWithNullType(item))
   }
 
-  fun bindViewHolder(viewHolder: RecyclerView.ViewHolder, item: Any?, payloads: List<Any>) {
-    bindViewHolder(viewHolder, item)
+  fun bindViewHolder(viewHolder: ViewHolder, item: Any?, payloads: List<Any>) {
+    getNullableRule(getType(item)).onBindHolder(viewHolder, replaceNullWithNullType(item), payloads)
+  }
+
+  fun onViewRecycled(holder: ViewHolder) {
+    getNullableRule(holder.itemViewType).onViewRecycled(holder)
+  }
+
+  fun onFailedToRecycleView(holder: ViewHolder): Boolean {
+    return getNullableRule(holder.itemViewType).onFailedToRecycleView(holder)
+  }
+
+  fun onViewAttachedToWindow(holder: ViewHolder) {
+    getNullableRule(holder.itemViewType).onViewAttachedToWindow(holder)
+  }
+
+  fun onViewDetachedFromWindow(holder: ViewHolder) {
+    getNullableRule(holder.itemViewType).onViewDetachedFromWindow(holder)
   }
 
   private fun checkNullTypeRule() {
@@ -75,9 +78,22 @@ class RuleManager {
     }
   }
 
+  private fun getNullableRule(type: Int): Rule<Any, ViewHolder> {
+    return if (type == NULL_TYPE) {
+      checkNullTypeRule()
+      nullTypeRule!!.rule as Rule<Any, ViewHolder>
+    } else {
+      ruleSet[type].rule as Rule<Any, ViewHolder>
+    }
+  }
+
+  private fun replaceNullWithNullType(item: Any?): Any {
+    return item ?: NullType
+  }
+
   companion object {
     const val NULL_TYPE = -2
   }
 
-  class NullType
+  object NullType
 }
