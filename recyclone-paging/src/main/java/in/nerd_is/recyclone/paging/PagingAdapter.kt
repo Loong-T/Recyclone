@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class PagingAdapter(diffCallback: DiffUtil.ItemCallback<Any?>) : PagedListAdapter<Any?, RecyclerView.ViewHolder>(diffCallback), DataOwner {
 
-  private val ruleManager = RuleManager()
+  private val ruleManager = RuleManager(this)
   private val delegate = AdapterDelegate(ruleManager, this)
 
   override fun get(position: Int): Any? {

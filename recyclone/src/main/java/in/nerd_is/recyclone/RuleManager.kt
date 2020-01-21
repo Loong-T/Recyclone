@@ -18,23 +18,26 @@ package `in`.nerd_is.recyclone
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 /**
  * @author Xuqiang ZHENG on 2017/2/25.
  */
 @Suppress("UNCHECKED_CAST")
-class RuleManager {
+class RuleManager(private val adapter: RecyclerView.Adapter<ViewHolder>) {
 
   private val ruleSet = RuleSet()
   private var nullTypeRule: TypeRule<NullType>? = null
 
-  fun setNullTypeRule(rule: TypeRule<NullType>) {
-    nullTypeRule = rule
+  fun setNullTypeRule(typeRule: TypeRule<NullType>) {
+    (typeRule.rule as Rule<NullType, ViewHolder>).adapter = adapter
+    nullTypeRule = typeRule
   }
 
-  fun <T> add(type: TypeRule<T>) {
-    ruleSet.add(type)
+  fun <T> add(typeRule: TypeRule<T>) {
+    (typeRule.rule as Rule<T, ViewHolder>).adapter = adapter
+    ruleSet.add(typeRule)
   }
 
   fun getType(item: Any?): Int {

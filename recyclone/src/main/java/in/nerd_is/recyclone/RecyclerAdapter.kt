@@ -22,7 +22,7 @@ import java.util.*
  * @author Xuqiang ZHENG on 18/4/19.
  */
 @Suppress("unused", "MemberVisibilityCanBePrivate")
-class RecyclerAdapter : AbstractAdapter() {
+open class RecyclerAdapter : AbstractAdapter() {
 
   private var _data: MutableList<Any?> = ArrayList()
 
@@ -36,14 +36,6 @@ class RecyclerAdapter : AbstractAdapter() {
 
   private val isDataEmpty: Boolean
     get() = _data.isEmpty()
-
-  fun <T> addRule(clazz: Class<T>, rule: Rule<T, *>) {
-    ruleManager.add(TypeRule(clazz, rule))
-  }
-
-  fun setNullRule(rule: Rule<RuleManager.NullType, *>) {
-    ruleManager.setNullTypeRule(TypeRule(RuleManager.NullType::class.java, rule))
-  }
 
   fun swapData(list: List<Any?>) {
     _data = ArrayList(list)

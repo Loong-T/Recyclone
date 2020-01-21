@@ -20,7 +20,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-interface Rule<T, VH : RecyclerView.ViewHolder> {
+abstract class Rule<T, VH : RecyclerView.ViewHolder> {
+
+  lateinit var adapter: RecyclerView.Adapter<VH>
 
   /**
    * Called when RecyclerView needs a new {@link ViewHolder} of the given type to represent
@@ -28,7 +30,7 @@ interface Rule<T, VH : RecyclerView.ViewHolder> {
    *
    * @see RecyclerView.Adapter.onCreateViewHolder
    */
-  fun onCreateHolder(inflater: LayoutInflater, parent: ViewGroup): VH
+  abstract fun onCreateHolder(inflater: LayoutInflater, parent: ViewGroup): VH
 
   /**
    * Called by RecyclerView to display the data at the specified position.
@@ -37,7 +39,7 @@ interface Rule<T, VH : RecyclerView.ViewHolder> {
    *
    * @see RecyclerView.Adapter.onBindViewHolder
    */
-  fun onBindHolder(holder: VH, item: T)
+  abstract fun onBindHolder(holder: VH, item: T)
 
   /**
    * Called by RecyclerView to display the data at the specified position.
@@ -46,7 +48,7 @@ interface Rule<T, VH : RecyclerView.ViewHolder> {
    *
    * @see RecyclerView.Adapter.onBindViewHolder
    */
-  fun onBindHolder(holder: VH, item: T, payloads: List<Any>) {
+  open fun onBindHolder(holder: VH, item: T, payloads: List<Any>) {
     onBindHolder(holder, item)
   }
 
@@ -55,7 +57,7 @@ interface Rule<T, VH : RecyclerView.ViewHolder> {
    *
    * @see RecyclerView.Adapter.onViewRecycled
    */
-  fun onViewRecycled(holder: VH) {
+  open fun onViewRecycled(holder: VH) {
 
   }
 
@@ -68,7 +70,7 @@ interface Rule<T, VH : RecyclerView.ViewHolder> {
    *
    * @see RecyclerView.Adapter.onFailedToRecycleView
    */
-  fun onFailedToRecycleView(holder: VH): Boolean {
+  open fun onFailedToRecycleView(holder: VH): Boolean {
     return false
   }
 
@@ -77,7 +79,7 @@ interface Rule<T, VH : RecyclerView.ViewHolder> {
    *
    * @see RecyclerView.Adapter.onViewAttachedToWindow
    */
-  fun onViewAttachedToWindow(holder: VH) {
+  open fun onViewAttachedToWindow(holder: VH) {
 
   }
 
@@ -86,7 +88,7 @@ interface Rule<T, VH : RecyclerView.ViewHolder> {
    *
    * @see RecyclerView.Adapter.onViewDetachedFromWindow
    */
-  fun onViewDetachedFromWindow(holder: VH) {
+  open fun onViewDetachedFromWindow(holder: VH) {
 
   }
 }

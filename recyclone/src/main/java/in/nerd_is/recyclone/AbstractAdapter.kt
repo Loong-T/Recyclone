@@ -22,13 +22,12 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * @author Xuqiang ZHENG on 2016/11/23.
  */
-abstract class AbstractAdapter :
-  RecyclerView.Adapter<RecyclerView.ViewHolder>(), DataOwner {
-
-  protected val ruleManager: RuleManager = RuleManager()
+abstract class AbstractAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), DataOwner {
 
   @Suppress("LeakingThis")
-  private val delegate: AdapterDelegate = AdapterDelegate(ruleManager, this)
+  protected val ruleManager: RuleManager = RuleManager(this)
+  @Suppress("LeakingThis")
+  protected val delegate: AdapterDelegate = AdapterDelegate(ruleManager, this)
 
   override fun getItemCount(): Int {
     return getSize()
@@ -67,5 +66,13 @@ abstract class AbstractAdapter :
 
   override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
     delegate.onViewDetachedFromWindow(holder)
+  }
+
+  fun <T> addRule(clazz: Class<T>, rule: Rule<T, *>) {
+    ruleManager.add(TypeRule(clazz, rule))
+  }
+
+  fun setNullRule(rule: Rule<RuleManager.NullType, *>) {
+    ruleManager.setNullTypeRule(TypeRule(RuleManager.NullType::class.java, rule))
   }
 }
