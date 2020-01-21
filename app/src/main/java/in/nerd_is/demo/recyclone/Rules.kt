@@ -17,13 +17,18 @@
 
 package `in`.nerd_is.demo.recyclone
 
+import `in`.nerd_is.demo.recyclone.databinding.ItemImageBinding
 import `in`.nerd_is.demo.recyclone.databinding.ItemPersonBinding
+import `in`.nerd_is.demo.recyclone.entity.Image
 import `in`.nerd_is.demo.recyclone.entity.Person
 import `in`.nerd_is.recyclone.Rule
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.selection.ItemDetailsLookup
+import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 
@@ -38,7 +43,7 @@ class TitleHolder(view: View) : RecyclerView.ViewHolder(view) {
   }
 }
 
-object StringRule : Rule<String, TitleHolder> {
+object StringRule : Rule<String, TitleHolder>() {
   override fun onCreateHolder(inflater: LayoutInflater, parent: ViewGroup): TitleHolder {
     return TitleHolder(inflater.inflate(R.layout.item_title, parent, false))
   }
@@ -59,12 +64,57 @@ class PersonHolder(private val binding: ItemPersonBinding) : RecyclerView.ViewHo
   }
 }
 
-object PersonRule : Rule<Person, PersonHolder> {
+object PersonRule : Rule<Person, PersonHolder>() {
   override fun onCreateHolder(inflater: LayoutInflater, parent: ViewGroup): PersonHolder {
     return PersonHolder(ItemPersonBinding.inflate(inflater, parent, false))
   }
 
   override fun onBindHolder(holder: PersonHolder, item: Person) {
     holder.bindTo(item)
+  }
+}
+
+class ImageHolder(private val binding: ItemImageBinding) : RecyclerView.ViewHolder(binding.root) {
+  fun bindTo(data: Image, tracker: SelectionTracker<Long>, payloads: List<Any>) {
+    if (payloads.isEmpty()) {
+      binding.imageView.load(data.url) {
+        crossfade(true)
+        placeholder(ColorDrawable(DataUtils.generateColor()))
+      }
+    }
+    with(binding) {
+      if (tracker.isSelected(itemId)) {
+        checkBox.isChecked = true
+        checkBox.visibility = View.VISIBLE
+      } else {
+        checkBox.isChecked = false
+        checkBox.visibility = View.GONE
+      }
+    }
+  }
+
+  val itemDetails: ItemDetailsLookup.ItemDetails<Long>
+    get() = object : ItemDetailsLookup.ItemDetails<Long>() {
+      override fun getSelectionKey(): Long? {
+        return itemId
+      }
+
+      override fun getPosition(): Int {
+        return adapterPosition
+      }
+    }
+}
+
+object ImageRule : Rule<Image, ImageHolder>() {
+  override fun onCreateHolder(inflater: LayoutInflater, parent: ViewGroup): ImageHolder {
+    return ImageHolder(ItemImageBinding.inflate(inflater, parent, false))
+  }
+
+  override fun onBindHolder(holder: ImageHolder, item: Image) {
+    holder.bindTo(item, (adapter as SelectionAdapter).tracker, emptyList())
+  }
+
+  override fun onBindHolder(holder: ImageHolder, item: Image, payloads: List<Any>) {
+    holder.bindTo(item, (adapter as SelectionAdapter).tracker, emptyList())
   }
 }

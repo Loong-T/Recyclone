@@ -40,7 +40,7 @@ class RecyclerViewActivity : AppCompatActivity() {
     val adapter = RecyclerAdapter()
     adapter.addRule(Person::class.java, PersonRule)
     adapter.addRule(String::class.java, StringRule)
-    adapter.setNullRule(object : Rule<RuleManager.NullType, TitleHolder> {
+    adapter.setNullRule(object : Rule<RuleManager.NullType, TitleHolder>() {
       override fun onCreateHolder(inflater: LayoutInflater, parent: ViewGroup): TitleHolder {
         return TitleHolder(inflater.inflate(R.layout.item_title, parent, false))
       }
@@ -74,7 +74,7 @@ class RecyclerViewActivity : AppCompatActivity() {
       }
     })
     adapter.addRule(String::class.java, StringRule)
-    adapter.setNullRule(object : Rule<RuleManager.NullType, TitleHolder> {
+    adapter.setNullRule(object : Rule<RuleManager.NullType, TitleHolder>() {
       override fun onCreateHolder(inflater: LayoutInflater, parent: ViewGroup): TitleHolder {
         return TitleHolder(inflater.inflate(R.layout.item_title, parent, false))
       }

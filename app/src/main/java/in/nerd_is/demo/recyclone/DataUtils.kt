@@ -17,7 +17,9 @@
 
 package `in`.nerd_is.demo.recyclone
 
+import `in`.nerd_is.demo.recyclone.entity.Image
 import `in`.nerd_is.demo.recyclone.entity.Person
+import android.graphics.Color
 import com.github.javafaker.Faker
 
 /**
@@ -41,5 +43,17 @@ object DataUtils {
 
   fun generateNameList(count: Int = 10): List<String> {
     return (0 until count).map { faker.name().nameWithMiddle() }
+  }
+
+  fun generateImage(): Image {
+    return Image(Image.id.getAndIncrement(), faker.avatar().image())
+  }
+
+  fun generateImageList(count: Int = 20): List<Image> {
+    return (0 until count).map { generateImage() }
+  }
+
+  fun generateColor(): Int {
+    return Color.parseColor(faker.color().hex())
   }
 }

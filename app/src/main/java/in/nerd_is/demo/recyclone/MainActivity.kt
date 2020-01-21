@@ -24,6 +24,9 @@ class MainActivity : AppCompatActivity() {
       btnLoadMore.setOnClickListener {
         startActivity(Intent(this@MainActivity, LoadMoreActivity::class.java))
       }
+      btnSelection.setOnClickListener {
+        startActivity(Intent(this@MainActivity, SelectionActivity::class.java))
+      }
     }
   }
 }

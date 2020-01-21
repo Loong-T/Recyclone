@@ -32,4 +32,11 @@
     android:text="Load More"
     android:textAllCaps="false" />
 
+  <Button
+    android:id="@+id/btnSelection"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Selection"
+    android:textAllCaps="false" />
+
 </LinearLayout>
