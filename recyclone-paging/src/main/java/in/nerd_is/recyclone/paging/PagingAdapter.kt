@@ -19,6 +19,7 @@ package `in`.nerd_is.recyclone.paging
 
 import `in`.nerd_is.recyclone.*
 import android.view.ViewGroup
+import androidx.paging.PagedList
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -78,5 +79,29 @@ class PagingAdapter(diffCallback: DiffUtil.ItemCallback<Any?>) : PagedListAdapte
 
   fun setNullRule(rule: Rule<RuleManager.NullType, *>) {
     ruleManager.setNullTypeRule(TypeRule(RuleManager.NullType::class.java, rule))
+  }
+
+  /**
+   * @see submitList
+   */
+  fun submitTypedList(pagedList: PagedList<out Any?>?) {
+    @Suppress("UNCHECKED_CAST")
+    submitList(pagedList as PagedList<Any?>?)
+  }
+
+  /**
+   * @see submitList
+   */
+  fun submitTypedList(pagedList: PagedList<out Any?>?, commitCallback: Runnable?) {
+    @Suppress("UNCHECKED_CAST")
+    submitList(pagedList as PagedList<Any?>?, commitCallback)
+  }
+
+  /**
+   * @see submitList
+   */
+  fun submitTypedList(pagedList: PagedList<out Any?>?, commitCallback: (() -> Unit)?) {
+    @Suppress("UNCHECKED_CAST")
+    submitList(pagedList as PagedList<Any?>?, commitCallback)
   }
 }

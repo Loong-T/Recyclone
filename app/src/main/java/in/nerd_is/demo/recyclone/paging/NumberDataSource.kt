@@ -20,17 +20,17 @@ package `in`.nerd_is.demo.recyclone.paging
 import android.util.Log
 import androidx.paging.PageKeyedDataSource
 
-class NumberDataSource : PageKeyedDataSource<Int, Any?>() {
+class NumberDataSource : PageKeyedDataSource<Int, String?>() {
   override fun loadInitial(
     params: LoadInitialParams<Int>,
-    callback: LoadInitialCallback<Int, Any?>
+    callback: LoadInitialCallback<Int, String?>
   ) {
     Log.d("NumberDataSource", "load page 0 from loadInitial with size ${params.requestedLoadSize}")
     val list = (0..params.requestedLoadSize).map { it.toString() }
     callback.onResult(list, -1, 1)
   }
 
-  override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Any?>) {
+  override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, String?>) {
     Log.d("NumberDataSource", "load page ${params.key} from loadAfter")
     val start = params.requestedLoadSize * params.key
     val end = start + params.requestedLoadSize
@@ -38,7 +38,7 @@ class NumberDataSource : PageKeyedDataSource<Int, Any?>() {
     callback.onResult(list, params.key + 1)
   }
 
-  override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Any?>) {
+  override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, String?>) {
     Log.d("NumberDataSource", "load page ${params.key} from loadBefore")
     val end = params.requestedLoadSize * (params.key + 1) -1
     val start = end - params.requestedLoadSize

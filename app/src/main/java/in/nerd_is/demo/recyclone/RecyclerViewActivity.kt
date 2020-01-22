@@ -89,7 +89,7 @@ class RecyclerViewActivity : AppCompatActivity() {
       .setPageSize(20)
       .setPrefetchDistance(10)
       .build()
-    val pagedList = PagedList.Builder<Int, Any>(NumberDataSource(), config)
+    val pagedList = PagedList.Builder<Int, String>(NumberDataSource(), config)
       .setNotifyExecutor {
         runOnUiThread(it)
       }.setFetchExecutor(
@@ -97,7 +97,7 @@ class RecyclerViewActivity : AppCompatActivity() {
       )
       .build()
     binding.recyclerView.adapter = adapter
-    adapter.submitList(pagedList)
+    adapter.submitTypedList(pagedList)
     binding.recyclerView.layoutManager = LinearLayoutManager(this)
   }
 
