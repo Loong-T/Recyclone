@@ -59,7 +59,7 @@ class RecyclerViewActivity : AppCompatActivity() {
     val nullList = (0..5).map { null }
     val data = (personLit + nameList + nullList).shuffled()
 
-    adapter.swapData(data)
+    adapter.submitList(data)
   }
 
   private fun initPaging() {

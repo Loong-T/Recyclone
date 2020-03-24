@@ -37,7 +37,7 @@ open class RecyclerAdapter : AbstractAdapter() {
   private val isDataEmpty: Boolean
     get() = _data.isEmpty()
 
-  fun swapData(list: List<Any?>) {
+  fun submitList(list: List<Any?>) {
     _data = ArrayList(list)
     notifyDataSetChanged()
   }
