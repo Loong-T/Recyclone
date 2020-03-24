@@ -20,8 +20,9 @@ package `in`.nerd_is.recyclone
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 
-class DiffAdapter(callback: DiffUtil.ItemCallback<Any?>) : AbstractAdapter() {
+open class DiffAdapter(callback: DiffUtil.ItemCallback<Any?>) : AbstractAdapter() {
 
+  @Suppress("LeakingThis")
   val differ = AsyncListDiffer(this, callback)
 
   override fun get(position: Int): Any? {
